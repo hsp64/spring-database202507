@@ -6,6 +6,7 @@ spring:
   application:
     name: spring-db202507
   datasource:
+#    url: jdbc:mariadb://localhost:3306/digimon_db
     url: jdbc:mariadb://localhost:3306/spring_study
     username: root
     password: mariadb
