@@ -1,6 +1,7 @@
 package com.spring.database.chap01.repository;
 
 import com.spring.database.chap01.entity.Book;
+import org.hibernate.dialect.TiDBDialect;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -8,8 +9,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.stereotype.Repository;
 
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import javax.sql.DataSource;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.util.List;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest // 스프링 컨텍스트에서 관리되는 빈을 꺼내올 수 있음
 @Repository
@@ -19,6 +25,8 @@ class BookRepositoryTest {
     // 5버전에서부터는 생성자주입을 막아놈 - 필드주입 해야함
     @Autowired
     BookRepository bookRepository;
+    @Autowired
+    private DataSource dataSource;
 
     // 테스트 메서드
     @Test
@@ -67,6 +75,23 @@ class BookRepositoryTest {
         //then
         assertTrue(flag);
     }
+
+    @Test
+    @DisplayName("전체조회를 하면 도서의 리스트가 반환된다.")
+    void findAllTest() {
+        //given
+
+        //when
+        List<Book> bookList = bookRepository.findAll();
+
+        //then
+        bookList.forEach(System.out::println);
+
+        assertEquals(9, bookList.size());
+        assertNotNull(bookList.get(0));
+        assertEquals("반지의제왕",bookList.get(0).getTitle());
+    }
+
 
 
 
