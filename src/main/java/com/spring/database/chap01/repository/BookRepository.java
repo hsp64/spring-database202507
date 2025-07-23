@@ -108,4 +108,25 @@ public class BookRepository {
         return bookList;
     }
 
+    // id로 단일조회 메서드
+    public Book findById(Long id) {
+        try (Connection conn = dataSource.getConnection()) {
+            String sql = """
+                        SELECT * FROM books
+                        WHERE id = ?
+                    """;
+
+            PreparedStatement pstmt = conn.prepareStatement(sql);
+            pstmt.setLong(1, id);
+
+            ResultSet rs = pstmt.executeQuery();
+
+            if (rs.next()) return new Book(rs);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
 }

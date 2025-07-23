@@ -93,6 +93,22 @@ class BookRepositoryTest {
     }
 
 
+    @Test
+    @DisplayName("적합한 id를 통해 개별조회를 하면 도서 1개의 객체가 변환된다.")
+    void findOneTest() {
+        //given
+        Long givenId = 5L;
+
+        //when
+        Book foundBook = bookRepository.findById(givenId);
+
+        //then
+        System.out.println("foundBook = " + foundBook);
+        assertNotNull(foundBook);
+        assertTrue(foundBook.isAvailable());
+        assertEquals("사랑의 하츄핑", foundBook.getTitle());
+    }
+
 
 
 
