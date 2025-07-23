@@ -9,6 +9,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.stereotype.Repository;
 
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @SpringBootTest // 스프링 컨텍스트에서 관리되는 빈을 꺼내올 수 있음
 @Repository
@@ -37,7 +38,7 @@ class BookRepositoryTest {
 
         // then - 테스트 결과 (단언)
         System.out.println("flag = " + flag);
-        Assertions.assertTrue(flag);
+        assertTrue(flag);
     }
 
     @Test
@@ -55,6 +56,18 @@ class BookRepositoryTest {
         //then
         assertFalse(!flag);
     }
+
+    @Test
+    @DisplayName("id를 주면 book테이블에서 해당 id를 사진진 행이 삭제된다")
+    void deleteTest() {
+        //given
+        Long givenId = 5L;
+        //when
+        boolean flag = bookRepository.deleteById(givenId);
+        //then
+        assertTrue(flag);
+    }
+
 
 
 
