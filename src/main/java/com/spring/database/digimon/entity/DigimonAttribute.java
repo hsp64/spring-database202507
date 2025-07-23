@@ -1,6 +1,9 @@
 package com.spring.database.digimon.entity;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
 import lombok.Getter;
+
+import java.util.Arrays;
 
 @Getter
 public enum DigimonAttribute {
@@ -14,4 +17,11 @@ public enum DigimonAttribute {
         this.label = label;
     }
 
+    @JsonCreator
+    public static DigimonAttribute from(String value) {
+        return Arrays.stream(DigimonAttribute.values())
+                .filter(e -> e.label.equalsIgnoreCase(value) || e.name().equalsIgnoreCase(value))
+                .findFirst()
+                .orElseThrow(() -> new IllegalArgumentException("Unknown attribute: " + value));
+    }
 }
