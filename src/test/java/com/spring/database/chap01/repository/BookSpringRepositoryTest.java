@@ -6,6 +6,8 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import java.util.List;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
@@ -57,6 +59,19 @@ class BookSpringRepositoryTest {
         //then
         assertTrue(b);
     }
+    
+    @Test
+    @DisplayName("Spring JDBC로 전체조회할 경우 도서 목록이 반환된다")
+    void findAllTest() {
+        //given
+        
+        //when
+        List<Book> bookList = bookSpringRepository.findAll();
+        //then
+        bookList.forEach(System.out::println);
+        assertEquals(9, bookList.size());
+    }
+    
 
 
 
