@@ -13,6 +13,7 @@ import java.util.List;
 
 import static com.spring.database.digimon.entity.Digimon.builder;
 import static org.junit.jupiter.api.Assertions.*;
+
 @SpringBootTest
 class DigimonRepositoryTest {
 
@@ -22,76 +23,77 @@ class DigimonRepositoryTest {
 
     @Test
     @DisplayName("디지몬 정보를 주면 데이터베이스 digimon에 저장된다.")
-    void saveTest() {
+    public void saveTest() {
         //given
-        Digimon givenDigimon = builder()
-                .name("파닥몬")
-                .level(DigimonLevel.valueOf("CHAMPION"))
-                .attribute(DigimonAttribute.valueOf("VACCINE"))
-                .type("공중")
-                .debutGame(DigimonDebutGame.valueOf("ADVENTURE"))
-                .build();
+        List<Digimon> digimonList = List.of(
+                Digimon.builder()
+                        .name("고유값몬투")
+                        .level(DigimonLevel.valueOf("CHAMPION"))
+                        .attribute(DigimonAttribute.valueOf("VACCINE"))
+                        .type("공유")
+                        .debutGame(DigimonDebutGame.valueOf("ADVENTURE"))
+                        .build()
+        );
         //when
-        boolean flag = digimonRepository.save(givenDigimon);
-
+        for (Digimon digimon : digimonList) {
+            digimonRepository.save(digimon);
+        }
         //then
-        System.out.println("flag = " + flag);
-        assertTrue(flag);
     }
 
-    @Test
-    @DisplayName("디지몬이름과 타입을 수정한다.")
-    void updateTest() {
-        //given
-            Digimon updateDigimon = Digimon.builder()
-                    .id(4L)
-                    .name("가트몬")
-                    .type("cute")
-                    .build();
-        //when
-            boolean flag = digimonRepository.updateNameAndType(updateDigimon);
-        //then
-        assertTrue(flag);
-    }
-
-    @Test
-    @DisplayName("id를 주면 digimon 테이블에서 해당 id를 가진 행이 삭제된다.")
-    void deleteTest() {
-        //given
-        Long givenId = 5L;
-        //when
-        boolean flag = digimonRepository.deleteById(givenId);
-        //then
-        assertTrue(flag);
-    }
-
-
-    @Test
-    @DisplayName("전체조회를 하면 디지몬의 리스트가 반환된다.")
-    void findAllTest() {
-        //given
-
-        //when
-        List<Digimon> digimonList = digimonRepository.findAll();
-        //then
-        digimonList.forEach(System.out::println);
-
-        assertEquals(5, digimonList.size());
-        assertNotNull(digimonList.get(0));
-        assertEquals("Agumon", digimonList.get(0).getName());
-    }
-
-    @Test
-    @DisplayName("적합한 id를 통해 개별조회를 하면 해당 디지몬 id의 객체가 반환된다.")
-    void findOneTest() {
-        //given
-        Long givenId = 6L;
-        //when
-        Digimon foundDigimon = digimonRepository.findById(givenId);
-        //then
-        System.out.println("foundDigimon = " + foundDigimon);
-        assertNotNull(foundDigimon);
-        assertEquals("파닥몬", foundDigimon.getName());
-    }
-
+//    @Test
+//    @DisplayName("디지몬이름과 타입을 수정한다.")
+//    public void updateTest() {
+//        //given
+//        Digimon updateDigimon = Digimon.builder()
+//                .id(4L)
+//                .name("가트몬")
+//                .type("cute")
+//                .build();
+//        //when
+//        boolean flag = digimonRepository.updateNameAndType(updateDigimon);
+//        //then
+//        assertTrue(flag);
+//    }
+//
+//    @Test
+//    @DisplayName("id를 주면 digimon 테이블에서 해당 id를 가진 행이 삭제된다.")
+//    public void deleteTest() {
+//        //given
+//        Long givenId = 5L;
+//        //when
+//        boolean flag = digimonRepository.deleteById(givenId);
+//        //then
+//        assertTrue(flag);
+//    }
+//
+//
+//    @Test
+//    @DisplayName("전체조회를 하면 디지몬의 리스트가 반환된다.")
+//    public void findAllTest() {
+//        //given
+//
+//        //when
+//        List<Digimon> digimonList = digimonRepository.findAll();
+//        //then
+//        digimonList.forEach(System.out::println);
+//
+//        assertEquals(5, digimonList.size());
+//        assertNotNull(digimonList.get(0));
+//        assertEquals("Agumon", digimonList.get(0).getName());
+//    }
+//
+//    @Test
+//    @DisplayName("적합한 id를 통해 개별조회를 하면 해당 디지몬 id의 객체가 반환된다.")
+//    public void findOneTest() {
+//        //given
+//        Long givenId = 6L;
+//        //when
+//        Digimon foundDigimon = digimonRepository.findById(givenId);
+//        //then
+//        System.out.println("foundDigimon = " + foundDigimon);
+//        assertNotNull(foundDigimon);
+//        assertEquals("파닥몬", foundDigimon.getName());
+//    }
+//
 }

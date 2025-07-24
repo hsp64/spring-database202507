@@ -1,10 +1,14 @@
 package com.spring.database.digimon.repository;
 
+import com.spring.database.chap02.entity.Product;
 import com.spring.database.digimon.entity.Digimon;
 import lombok.RequiredArgsConstructor;
+import org.springframework.jdbc.core.BeanPropertyRowMapper;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
 import javax.sql.DataSource;
+import java.beans.BeanProperty;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -16,116 +20,76 @@ import java.util.List;
 @Repository
 public class DigimonRepository {
 
-    private final DataSource dataSource;
+    private final JdbcTemplate template;
 
     // INSERT 기능 - 디지몬 생성
-    public boolean save(Digimon digimon) {
-        try (Connection conn = dataSource.getConnection()) {
-            String sql = """
-                    INSERT INTO digimon
-                        (name, level, attribute, type, debut_game)
-                    VALUES
-                        (?, ?, ?, ?, ?)
-                    """;
-            PreparedStatement pstmt = conn.prepareStatement(sql);
-            pstmt.setString(1, digimon.getName());
-            pstmt.setString(2, digimon.getLevel().getLabel());
-            pstmt.setString(3, digimon.getAttribute().getLabel());
-            pstmt.setString(4, digimon.getType());
-            pstmt.setString(5, digimon.getDebutGame().getLabel());
-
-            int result = pstmt.executeUpdate();
-            return result == 1;
-        } catch (Exception e) {
-            e.printStackTrace();
-            return false;
-        }
+    public void save(Digimon digimon) {
+        String sql = """
+                INSERT INTO digimon
+                    (name, level, attribute, type, debut_game)
+                VALUES
+                    (?, ?, ?, ?, ?)
+                """;
+        template.update(sql,
+                digimon.getName(),
+                digimon.getLevel().toString(),
+                digimon.getAttribute().toString(),
+                digimon.getType(),
+                digimon.getDebutGame().toString()
+        );
     }
+
 
     // 디지몬 이름 타입 변경
-    public boolean updateNameAndType(Digimon digimon) {
-        try (Connection conn = dataSource.getConnection()) {
-            String sql = """
-                    UPDATE digimon
-                        SET name = ?,
-                            type = ?
-                        where id = ?
-                    """;
-            PreparedStatement pstmt = conn.prepareStatement(sql);
-            pstmt.setString(1, digimon.getName());
-            pstmt.setString(2, digimon.getType());
-            pstmt.setLong(3, digimon.getId());
+    public void updateNameAndType(Digimon digimon) {
+        String sql = """
+                UPDATE digimon
+                    SET name = ?,
+                        level = ?,
+                        attribute = ?,
+                        type = ?,
+                        debut_game = ?
+                    where id = ?
+                """;
+        template.update(sql,
+                digimon.getName(),
+                digimon.getLevel(),
+                digimon.getAttribute(),
+                digimon.getType(),
+                digimon.getDebutGame(),
+                digimon.getId()
+        );
 
-            int result = pstmt.executeUpdate();
-            return result == 1;
-
-        } catch (Exception e) {
-            e.printStackTrace();
-            return false;
-        }
     }
 
-    // 디지몬 정보 삭제
-    public boolean deleteById(Long id) {
-        try (Connection conn = dataSource.getConnection()) {
 
+    // 디지몬 정보 삭제(논리 삭제)
+    public void deleteById(Long id) {
             String sql = """
-                    DELETE FROM digimon
+                    UPDATE FROM digimon
+                        SET debut_game = 'DELETED'
                     WHERE id = ?
                     """;
-
-            PreparedStatement pstmt = conn.prepareStatement(sql);
-            pstmt.setLong(1, id);
-
-            return pstmt.executeUpdate() == 1;
-
-        } catch (Exception e) {
-            e.printStackTrace();
-            return false;
-        }
+            template.update(sql, id);
     }
 
-    // 전체 조회 - ORM (Object Relational Mapping)
+    // 전체 조회
     public List<Digimon> findAll() {
-
-        List<Digimon> digimonList = new ArrayList<>();
-
-        try (Connection conn = dataSource.getConnection()) {
             String sql = """
-                        SELECT * FROM digimon
+                    SELECT * FROM digimon
+                    WHERE debut_game <> 'DELETED'
                     """;
-
-            PreparedStatement pstmt = conn.prepareStatement(sql);
-
-            ResultSet resultSet = pstmt.executeQuery();
-
-            while (resultSet.next()) digimonList.add(new Digimon(resultSet));
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return digimonList;
+            return template.query(sql, new BeanPropertyRowMapper<>(Digimon.class));
     }
 
     // id로 단일조회 메서드
     public Digimon findById(Long id) {
-        try (Connection conn = dataSource.getConnection()) {
-            String sql = """
-                        SELECT * FROM digimon
-                        WHERE id = ?
-                    """;
+        String sql = """
+            SELECT * FROM digimon
+            WHERE id = ?
+            """;
 
-            PreparedStatement pstmt = conn.prepareStatement(sql);
-            pstmt.setLong(1, id);
-
-            ResultSet resultSet = pstmt.executeQuery();
-
-            if (resultSet.next()) return new Digimon(resultSet);
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return null;
+        return template.queryForObject(sql, (rs, rowNum) -> new Digimon(rs), id);
     }
 
 }
