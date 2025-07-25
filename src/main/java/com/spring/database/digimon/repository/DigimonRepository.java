@@ -1,18 +1,11 @@
 package com.spring.database.digimon.repository;
 
-import com.spring.database.chap02.entity.Product;
 import com.spring.database.digimon.entity.Digimon;
 import lombok.RequiredArgsConstructor;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
-import javax.sql.DataSource;
-import java.beans.BeanProperty;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.util.ArrayList;
 import java.util.List;
 
 // 역할: 데이터 베이스에 접근해서 CRUD를 수행하는 객체
@@ -40,7 +33,7 @@ public class DigimonRepository {
     }
 
 
-    // 디지몬 이름 타입 변경
+    // 디지몬 이름, 레벨, 속성, 타입, 데뷔 변경
     public void updateNameAndType(Digimon digimon) {
         String sql = """
                 UPDATE digimon
@@ -53,10 +46,10 @@ public class DigimonRepository {
                 """;
         template.update(sql,
                 digimon.getName(),
-                digimon.getLevel(),
-                digimon.getAttribute(),
+                digimon.getLevel().toString(),
+                digimon.getAttribute().toString(),
                 digimon.getType(),
-                digimon.getDebutGame(),
+                digimon.getDebutGame().toString(),
                 digimon.getId()
         );
 
@@ -65,29 +58,29 @@ public class DigimonRepository {
 
     // 디지몬 정보 삭제(논리 삭제)
     public void deleteById(Long id) {
-            String sql = """
-                    UPDATE FROM digimon
-                        SET debut_game = 'DELETED'
-                    WHERE id = ?
-                    """;
-            template.update(sql, id);
+        String sql = """
+                UPDATE digimon
+                    SET debut_game = 'DELETED'
+                WHERE id = ?
+                """;
+        template.update(sql, id);
     }
 
     // 전체 조회
     public List<Digimon> findAll() {
-            String sql = """
-                    SELECT * FROM digimon
-                    WHERE debut_game <> 'DELETED'
-                    """;
-            return template.query(sql, new BeanPropertyRowMapper<>(Digimon.class));
+        String sql = """
+                SELECT * FROM digimon
+                WHERE debut_game <> 'DELETED'
+                """;
+        return template.query(sql, new BeanPropertyRowMapper<>(Digimon.class));
     }
 
     // id로 단일조회 메서드
     public Digimon findById(Long id) {
         String sql = """
-            SELECT * FROM digimon
-            WHERE id = ?
-            """;
+                SELECT * FROM digimon
+                WHERE id = ?
+                """;
 
         return template.queryForObject(sql, (rs, rowNum) -> new Digimon(rs), id);
     }

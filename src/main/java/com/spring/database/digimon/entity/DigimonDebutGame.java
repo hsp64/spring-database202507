@@ -18,12 +18,12 @@ public enum DigimonDebutGame {
         this.label = label;
     }
 
-//    @JsonCreator
-//    public static DigimonDebutGame from(String value) {
-//        return Arrays.stream(DigimonDebutGame.values())
-//                .filter(e -> e.label.equalsIgnoreCase(value) || e.name().equalsIgnoreCase(value))
-//                .findFirst()
-//                .orElseThrow(() -> new IllegalArgumentException("Unknown debut game: " + value));
-//    }
+    @JsonCreator
+    public static DigimonDebutGame from(String value) {
+        return Arrays.stream(DigimonDebutGame.values())
+                .filter(e -> e.label.equalsIgnoreCase(value) || e.name().equalsIgnoreCase(value))
+                .findFirst()
+                .orElseThrow(() -> new IllegalArgumentException("Unknown debut game: " + value));
+    }
 
 }
