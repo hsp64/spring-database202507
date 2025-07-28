@@ -6,46 +6,46 @@
 <!-- namespace에는 연결할 인터페이스의 풀네임(패키지명+클래스명)을 작성 -->
 <mapper namespace="com.spring.database.digimon.DigimonMapper">
 
-    <insert id="save">
-        INSERT INTO digimon
-        (name, level, attribute, type, debut_game)
-        VALUES
-        (#{name}, #{level}, #{attribute}, #{type}, #{debutGame})
-    </insert>
+<!--    <insert id="save">-->
+<!--        INSERT INTO digimon-->
+<!--        (name, level, attribute, type, debut_game)-->
+<!--        VALUES-->
+<!--        (#{name}, #{level}, #{attribute}, #{type}, #{debutGame})-->
+<!--    </insert>-->
 
-    <insert id="update">
-        UPDATE digimon
-        SET
-        name = #{name}
-        , level = #{level}
-        , attribute = #{attribute}
-        , type = #{type}
-        , debut_game = #{debutGame}
-        WHERE id = #{id}
-    </insert>
+<!--    <insert id="update">-->
+<!--        UPDATE digimon-->
+<!--        SET-->
+<!--        name = #{name}-->
+<!--        , level = #{level}-->
+<!--        , attribute = #{attribute}-->
+<!--        , type = #{type}-->
+<!--        , debut_game = #{debutGame}-->
+<!--        WHERE id = #{id}-->
+<!--    </insert>-->
 
-    <delete id="deleteById">
-        DELETE FROM digimon
-        WHERE id = #{id}
-    </delete>
+<!--    <delete id="deleteById">-->
+<!--        DELETE FROM digimon-->
+<!--        WHERE id = #{id}-->
+<!--    </delete>-->
 
-    <select id="findById" resultType="Digimon">
-        SELECT *
-        FROM digimon
-        WHERE id = #{id}
-    </select>
+<!--    <select id="findById" resultType="Digimon">-->
+<!--        SELECT *-->
+<!--        FROM digimon-->
+<!--        WHERE id = #{id}-->
+<!--    </select>-->
 
-    <select id="findAll" resultType="Digimon">
-        SELECT *
-        FROM digimon
-        ORDER BY name desc
-    </select>
+<!--    <select id="findAll" resultType="Digimon">-->
+<!--        SELECT *-->
+<!--        FROM digimon-->
+<!--        ORDER BY name desc-->
+<!--    </select>-->
 
-    <select id="digimonCount" resultType="int">
-        SELECT COUNT(*)
-        FROM digimon
-        WHERE debut_game != 'DELETED'
-    </select>
+<!--    <select id="digimonCount" resultType="int">-->
+<!--        SELECT COUNT(*)-->
+<!--        FROM digimon-->
+<!--        WHERE debut_game != 'DELETED'-->
+<!--    </select>-->
 
 
 </mapper>
