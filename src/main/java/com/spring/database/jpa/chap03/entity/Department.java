@@ -52,7 +52,7 @@ public class Department {
 
         - orphanRemoval : 고아 객체 삭제 - 부모와의 연결이 끊어진 자식객체를 데이터베이스에서 삭제
      */
-    @OneToMany(mappedBy = "department", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "department", fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Employee> employees = new ArrayList<>();
 
 
@@ -62,4 +62,34 @@ public class Department {
         this.employees.add(employee);
     }
 
+
+    /*
+       다대다 관계
+
+    상품 N    :        M  회원
+
+              1  주문 1
+
+    - 다대다 관계는 이 관계를 1대 다와 다대 1로 풀어줄 중간테이블이
+      필요함
+
+    1개의 상품(청소기)  여러명의 회원이 주문할 수 있음
+    한명의 회원은  여러 상품을 주문할 수 있음
+
+    [ 상품 ]
+    상품번호    상품명
+       1            에어컨
+       2            청소기
+    [ 주문 ]
+     상품번호    회원번호
+        1                1
+        1                2
+        2                1
+
+    [ 회원 ]
+    회원번호    회원명
+       1            김철수
+       2            박영희
+
+     */
 }
