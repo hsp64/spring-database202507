@@ -157,3 +157,9 @@ class QueryDslBasicTest {
 
 
 }
+
+/*
+  간단한 쿼리(INSERT, UPDATE, DELETE, 단순조회) -> Spring JPA
+  조금 복잡한 쿼리 (간단한 조인, 간단한 그룹바이) -> QueryDSL
+  완전 복잡한 쿼리 or DBMS에 종속적인 쿼리 -> JDBC
+ */
