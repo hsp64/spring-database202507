@@ -118,10 +118,9 @@ class QueryDslBasicTest {
         //when
         Idol foundIdol = jdbcTemplate.queryForObject(sql,
                 (rs, n) -> new Idol(
-                        rs.getLong("idol_id")
-                        , rs.getString("idol_name")
-                        , rs.getInt("age")
-                        , null
+//                        rs.getLong("idol_id")
+//                        , rs.getString("idol_name")
+//                        , rs.getInt("age")
                 ),
                 "김채원"
         );
@@ -130,9 +129,9 @@ class QueryDslBasicTest {
                         SELECT * FROM tbl_group WHERE group_id = ?
                         """,
                 (rs, n) -> new Group(
-                        rs.getLong("group_id")
-                        , rs.getString("group_name")
-                        , null
+//                        rs.getLong("group_id")
+//                        , rs.getString("group_name")
+//                        , null
                 ),
                 1
         );
@@ -332,8 +331,3 @@ class QueryDslBasicTest {
 
 
 }
-/*
-  간단한 쿼리(INSERT, UPDATE, DELETE, 단순조회) -> Spring JPA
-  조금 복잡한 쿼리 (간단한 조인, 간단한 그룹바이) -> QueryDSL
-  완전 복잡한 쿼리 or DBMS에 종속적인 쿼리 -> JDBC
- */
