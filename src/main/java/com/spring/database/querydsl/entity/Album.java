@@ -4,7 +4,7 @@ import jakarta.persistence.*;
 import lombok.*;
 
 @Getter
-@Setter
+@Setter 
 @ToString(exclude = {"group"})
 @EqualsAndHashCode
 @NoArgsConstructor
